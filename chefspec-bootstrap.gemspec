@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = "Automatically generate ChefSpec tests based on your recipes."
   s.authors     = ["Alexander Meng"]
   s.email       = 'alexbmeng@gmail.com'
-  s.files       = `git ls-files`.split($/),
+  s.files       = `git ls-files`.split($/)
   s.homepage    = 'http://rubygems.org/gems/chefspec-bootstrap'
   s.license     = 'Apache'
   s.executables   = ["chefspec-bootstrap"]
