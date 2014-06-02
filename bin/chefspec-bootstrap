@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'chefspec-bootstrap'
+require 'trollop'
+
+opts = Trollop::options do
+  opt :cookbooks_dir, "Your site cookbooks directory", :type => :string, :default => "site-cookbooks"
+  opt :spec_dir, "Your spec directory", :type => :string, :default => "spec"
+  opt :template, "ERB template file used to generate specs", :type => :string
+end
+
+bootstrap = ChefSpec::Bootstrap.new
+
+bootstrap.generate(opts[:cookbooks_dir], opts[:spec_dir], opts[:template])
