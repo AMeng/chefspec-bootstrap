@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.executables   = ["chefspec-bootstrap"]
   s.required_ruby_version = '>= 1.9'
 
-  s.add_dependency 'chef',     '~> 11.0'
-  s.add_dependency 'chefspec', '~> 3.1.0'
+  s.add_dependency 'chefspec', '~> 3.4.0'
   s.add_dependency 'trollop', '~> 2.0.0'
 end
