@@ -1,10 +1,56 @@
 chefspec-bootstrap
 ==================
 
-A command line tool to get started with ChefSpec. The gem will look up all your recipes and create a spec file for each one.
+A command line tool to get started with ChefSpec. Generates spec files for your untested recipes.
 
+Given a cookbook called `cookbook` with a recipe called `recipe.rb`:
+```ruby
+package "apache2"
+
+file "/etc/apache2/sites-available/default" do
+  action :delete
+end
+
+template "/etc/apache2/sites-available/mysite" do
+  source "mysite.conf.erb"
+end
+```
+
+The command line tool will generate the following spec file at `spec/cookbook/recipe_spec.rb`:
+```ruby
+require 'chefspec'
+
+describe 'cookbook::recipe' do
+  let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
+
+  it 'runs successfully' do
+    expect{chef_run}.not_to raise_error
+  end
+  
+  it "installs the apache2 package" do
+    expect(chef_run).to install_package("apache2")
+  end
+
+  it "deletes the /etc/apache2/conf.d/python.conf file" do
+    expect(chef_run).to delete_file("/etc/apache2/conf.d/python.conf")
+  end
+
+  it "creates the /etc/apache2/sites-available/mysite template" do
+    expect(chef_run).to create_template("/etc/apache2/sites-available/mysite")
+  end
+end
+```
+
+
+Getting Started
+---
+Install the gem
 ```
 gem install chefspec-bootstrap
+```
+
+Run the command-line tool
+```
 chefspec-bootstrap
 ```
 
