@@ -5,5 +5,9 @@ describe '<%= cookbook %>::<%= recipe %>' do
 
   it 'runs successfully' do
     expect{chef_run}.not_to raise_error
-  end
+  end<% if test_cases %><% test_cases.each do |test_case| %>
+
+  it "<%= test_case[:it] %>" do
+    expect(chef_run).to <%= test_case[:action] %>("<%= test_case[:name] %>")
+  end<% end %><% end %>
 end

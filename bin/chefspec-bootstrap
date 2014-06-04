@@ -9,6 +9,5 @@ opts = Trollop::options do
   opt :template, "ERB template file used to generate specs", :type => :string
 end
 
-bootstrap = ChefSpec::Bootstrap.new
-
-bootstrap.generate(opts[:cookbooks_dir], opts[:spec_dir], opts[:template])
+bootstrap = ChefSpec::Bootstrap.new(opts[:cookbooks_dir], opts[:spec_dir], opts[:template])
+bootstrap.generate()
