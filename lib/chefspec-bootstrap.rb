@@ -2,6 +2,7 @@ require 'erb'
 require 'fileutils'
 require 'ostruct'
 require 'chefspec'
+require_relative 'api_map'
 
 module ChefSpec
   class Bootstrap
@@ -29,13 +30,9 @@ module ChefSpec
     def generate
       setup()
 
+      puts ChefSpec::APIMap.map
+
       erb = ERB.new(File.read(@template_file))
-
-      # begin
-      #   require "#{@spec_dir}/spec_helper.rb"
-      # rescue LoadError
-
-      # end
 
       ::RSpec.configure { |config| config.cookbook_path = [@cookbooks_dir, 'cookbooks'] }
 
@@ -105,12 +102,14 @@ module ChefSpec
         end
 
         noun = resource.resource_name
+        noun_readable = noun.gsub("_", " ")
         adjective = resource.name
 
         verbs.each do |verb|
+          verb_readable = verb.gsub("_", " ")
           if not verb == :nothing
             test_cases.push({
-              :it => "#{verb}s the #{adjective} #{noun}",
+              :it => "#{verb_readable}s the #{adjective} #{noun_readable}",
               :action => "#{verb}_#{noun}",
               :name => adjective
             })
