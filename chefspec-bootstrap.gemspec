@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'chefspec-bootstrap'
-  s.version     = '0.0.2'
+  s.version     = '0.0.3'
   s.date        = '2014-06-02'
   s.summary     = "Bootstrap your ChefSpec tests."
   s.description = "Automatically generate ChefSpec tests based on your recipes."
