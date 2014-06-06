@@ -23,10 +23,6 @@ require 'chefspec'
 describe 'cookbook::recipe' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
-  it 'runs successfully' do
-    expect{chef_run}.not_to raise_error
-  end
-  
   it "installs the apache2 package" do
     expect(chef_run).to install_package("apache2")
   end
