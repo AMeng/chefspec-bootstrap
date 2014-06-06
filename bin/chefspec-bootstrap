@@ -7,7 +7,13 @@ opts = Trollop::options do
   opt :cookbooks_dir, "Your site cookbooks directory", :type => :string, :default => "site-cookbooks"
   opt :spec_dir, "Your spec directory", :type => :string, :default => "spec"
   opt :template, "ERB template file used to generate specs", :type => :string
+  opt :recursive, "Generate specs for included recipes."
 end
 
-bootstrap = ChefSpec::Bootstrap.new(opts[:cookbooks_dir], opts[:spec_dir], opts[:template])
+bootstrap = ChefSpec::Bootstrap.new(
+  opts[:cookbooks_dir],
+  opts[:spec_dir],
+  opts[:template],
+  opts[:recursive]
+)
 bootstrap.generate()

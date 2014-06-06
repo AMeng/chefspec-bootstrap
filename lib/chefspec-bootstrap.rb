@@ -7,10 +7,11 @@ require_relative 'api_map'
 module ChefSpec
   class Bootstrap
 
-    def initialize(cookbooks_dir, spec_dir, template_file)
+    def initialize(cookbooks_dir, spec_dir, template_file, recursive)
       @cookbooks_dir = cookbooks_dir
       @spec_dir = spec_dir
       @template_file = template_file
+      @recursive = recursive
     end
 
     def setup
@@ -59,7 +60,7 @@ module ChefSpec
             puts "    execution failed. Creating empty spec file."
           end
 
-          resources = get_resources(chef_run)
+          resources = get_resources(chef_run, cookbook, recipe)
           test_cases = generate_test_cases(resources)
 
           File.open(filename, "w") do |spec_file|
@@ -85,9 +86,16 @@ module ChefSpec
       return resource.name || resource.identity
     end
 
-    def get_resources(chef_run)
+    def get_resources(chef_run, cookbook, recipe)
       if chef_run
-        return chef_run.resource_collection.all_resources
+        resources = chef_run.resource_collection.all_resources
+        if @recursive
+          return resources
+        else
+          return resources.select do |resource|
+            resource.cookbook_name == cookbook.to_sym and resource.recipe_name == recipe
+          end
+        end
       else
         return []
       end
