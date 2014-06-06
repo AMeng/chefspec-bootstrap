@@ -25,12 +25,12 @@ module ChefSpec
       if not File.exist?(@template_file)
         abort "Unable to locate template file (#{@template_file})"
       end
+
+      @api_map = ChefSpec::APIMap.new.map
     end
 
     def generate
       setup()
-
-      puts ChefSpec::APIMap.map
 
       erb = ERB.new(File.read(@template_file))
 
@@ -102,15 +102,13 @@ module ChefSpec
         end
 
         noun = resource.resource_name
-        noun_readable = noun.gsub("_", " ")
         adjective = resource.name
 
         verbs.each do |verb|
-          verb_readable = verb.gsub("_", " ")
           if not verb == :nothing
             test_cases.push({
-              :it => "#{verb_readable}s the #{adjective} #{noun_readable}",
-              :action => "#{verb}_#{noun}",
+              :it => get_it_block(noun, verb, adjective),
+              :expect => get_expect_block(noun, verb),
               :name => adjective
             })
           end
@@ -118,5 +116,42 @@ module ChefSpec
       end
       return test_cases
     end
+
+    def get_it_block(noun, verb, adjective)
+      it = "%{verb}s the %{adjective} %{noun}"
+      noun_readable = noun.to_s.gsub("_", " ")
+      verb_readable = verb.to_s.gsub("_", " ")
+      string_variables = {:noun => noun_readable, :verb => verb_readable, :adjective => adjective}
+
+      if @api_map[noun] and @api_map[noun][:it]
+        if @api_map[noun][:it][verb]
+          it = @api_map[noun][:it][verb]
+        elsif @api_map[noun][:it][:default]
+          it = @api_map[noun][:it][:default]
+        end
+      end
+
+      return escape_string(it  % string_variables)
+    end
+
+    def get_expect_block(noun, verb)
+      expect = "%{verb}_%{noun}"
+      string_variables = {:noun => noun, :verb => verb}
+
+      if @api_map[noun] and @api_map[noun][:expect]
+        if @api_map[noun][:expect][verb]
+          expect = @api_map[noun][:expect][verb]
+        elsif @api_map[noun][:expect][:default]
+          expect = @api_map[noun][:expect][:default]
+        end
+      end
+
+      return escape_string(expect % string_variables)
+    end
+
+    def escape_string(string)
+      return string.gsub("\\","\\\\").gsub("\"", "\\\"")
+    end
+
   end
 end
