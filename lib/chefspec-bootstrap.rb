@@ -7,8 +7,9 @@ require_relative 'api_map'
 module ChefSpec
   class Bootstrap
 
-    def initialize(cookbooks_dir, spec_dir, template_file, recursive)
+    def initialize(cookbooks_dir, cookbooks_path, spec_dir, template_file, recursive)
       @cookbooks_dir = cookbooks_dir
+      @cookbooks_path = cookbooks_path
       @spec_dir = spec_dir
       @template_file = template_file
       @recursive = recursive
@@ -28,14 +29,22 @@ module ChefSpec
       end
 
       @api_map = ChefSpec::APIMap.new.map
+
+      begin
+        require File.expand_path("#{@spec_dir}/spec_helper.rb")
+        @spec_helper = true
+      rescue LoadError
+        @spec_helper = false
+        ::RSpec.configure do |config|
+          config.cookbook_path = @cookbooks_path || [@cookbooks_dir, 'cookbooks']
+        end
+      end
     end
 
     def generate
       setup()
 
       erb = ERB.new(File.read(@template_file))
-
-      ::RSpec.configure { |config| config.cookbook_path = [@cookbooks_dir, 'cookbooks'] }
 
       Dir.glob("#{@cookbooks_dir}/*/recipes/*").each do |path|
         path, recipe_file = File.split(path)
@@ -77,7 +86,7 @@ module ChefSpec
     def get_chef_run(cookbook, recipe)
       begin
         return ChefSpec::Runner.new.converge("#{cookbook}::#{recipe}")
-      rescue
+      rescue Exception => e
         return nil
       end
     end
@@ -86,9 +95,13 @@ module ChefSpec
       return resource.name || resource.identity
     end
 
+    def get_all_resources(chef_run)
+      return chef_run.resource_collection.all_resources
+    end
+
     def get_resources(chef_run, cookbook, recipe)
       if chef_run
-        resources = chef_run.resource_collection.all_resources
+        resources = get_all_resources(chef_run)
         if @recursive
           return resources
         else

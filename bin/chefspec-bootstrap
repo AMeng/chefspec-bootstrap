@@ -3,15 +3,19 @@
 require 'chefspec-bootstrap'
 require 'trollop'
 
+cookbook_path_help_text = "RSpec config for cookbook path. Defaults to RSpec.configure.cookbook_path from spec_helper.rb."
+
 opts = Trollop::options do
   opt :cookbooks_dir, "Your site cookbooks directory", :type => :string, :default => "site-cookbooks"
+  opt :cookbooks_path, cookbook_path_help_text, :type => :strings
+  opt :recursive, "Generate specs for included recipes."
   opt :spec_dir, "Your spec directory", :type => :string, :default => "spec"
   opt :template, "ERB template file used to generate specs", :type => :string
-  opt :recursive, "Generate specs for included recipes."
 end
 
 bootstrap = ChefSpec::Bootstrap.new(
   opts[:cookbooks_dir],
+  opts[:cookbooks_path],
   opts[:spec_dir],
   opts[:template],
   opts[:recursive]
