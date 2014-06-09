@@ -53,9 +53,11 @@ chefspec-bootstrap
 Options
 ---
 ```
---cookbooks-dir, -c <s>:   Your site cookbooks directory (default: site-cookbooks)
---spec-dir, -s <s>:        Your spec directory (default: spec)
---template, -t <s>:        ERB template file used to generate specs
+  --cookbooks-dir, -c <s>:   Your site cookbooks directory (default: site-cookbooks)
+--cookbooks-path, -o <s+>:   RSpec config for cookbook path. Defaults to RSpec.configure.cookbook_path from spec_helper.rb.
+          --recursive, -r:   Generate specs for included recipes.
+       --spec-dir, -s <s>:   Your spec directory (default: spec)
+       --template, -t <s>:   ERB template file used to generate specs
 ```
 
 Creating a custom template
