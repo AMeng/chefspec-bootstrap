@@ -1,0 +1,13 @@
+Encoding:
+  Enabled: false
+
+LineLength:
+  Max: 120
+
+Documentation:
+  Enabled: false
+
+MethodLength:
+  Enabled: false
+
+inherit_from: .rubocop_todo.yml
