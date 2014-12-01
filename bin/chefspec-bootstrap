@@ -4,25 +4,25 @@ require 'rspec/expectations'
 require 'chefspec-bootstrap'
 require 'optparse'
 
-options = {:template => nil}
+options = { template: nil }
 
 optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: chefspec-bootstrap <recipe.rb> [options]"
+  opts.banner = 'Usage: chefspec-bootstrap <recipe.rb> [options]'
 
-  opts.on('-t', '--template <file>', "ERB template file used to generate specs") do |t|
+  opts.on('-t', '--template <file>', 'ERB template file used to generate specs') do |t|
     options[:template] = t
   end
 
-  opts.on('-s', '--spechelper <file>', "spec_helper.rb file. By default, looks in spec/spec_helper.rb") do |s|
+  opts.on('-s', '--spechelper <file>', 'spec_helper.rb file. By default, looks in spec/spec_helper.rb') do |s|
     options[:spec_helper] = s
   end
 
-  opts.on('-o', '--output <file>', "File to output spec. Prints to stdout if not specified.") do |o|
+  opts.on('-o', '--output <file>', 'File to output spec. Prints to stdout if not specified.') do |o|
     options[:output_file] = o
   end
 end
 
-abort "Recipe not specified!" if ARGV.empty?
+abort 'Recipe not specified!' if ARGV.empty?
 
 optparse.parse!
 

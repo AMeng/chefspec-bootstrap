@@ -42,7 +42,7 @@ module ChefSpec
     def generate
       setup
 
-      abort 'Output file already exists. Refusing to override.' if @output_file and File.exist?(@output_file)
+      abort 'Output file already exists. Refusing to override.' if @output_file && File.exist?(@output_file)
 
       erb = ERB.new(File.read(@template_file))
 
