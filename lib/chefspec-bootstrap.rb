@@ -6,9 +6,11 @@ require_relative 'api_map'
 
 module ChefSpec
   class Bootstrap
-    def initialize(recipe, template_file)
+    def initialize(recipe, template_file, spec_helper_file, output_file)
       @template_file = template_file
       @recipe = recipe
+      @spec_helper_file = spec_helper_file || 'spec/spec_helper.rb'
+      @output_file = output_file
     end
 
     def setup
@@ -27,12 +29,11 @@ module ChefSpec
       @api_map = ChefSpec::APIMap.new.map
 
       begin
-        require File.expand_path("spec/spec_helper.rb")
+        require File.expand_path(@spec_helper_file)
         @spec_helper = true
       rescue LoadError
         @spec_helper = false
         ::RSpec.configure do |config|
-          #config.cookbook_path = @cookbooks_path || [@cookbooks_dir, 'cookbooks']
           config.cookbook_path = ['cookbooks']
         end
       end
@@ -41,6 +42,8 @@ module ChefSpec
     def generate
       setup
 
+      abort 'Output file already exists. Refusing to override.' if @output_file and File.exist?(@output_file)
+
       erb = ERB.new(File.read(@template_file))
 
       path, recipe_file = File.split(@recipe)
@@ -48,13 +51,21 @@ module ChefSpec
       cookbook = path.split(File::SEPARATOR)[1]
       chef_run = get_chef_run(cookbook, recipe)
 
-      puts '# Chefspec execution failed. Generated empty spec file.' unless chef_run
+      puts 'Chefspec execution failed. Generating generic spec.' unless chef_run
 
       resources = get_resources(chef_run, cookbook, recipe)
       test_cases = generate_test_cases(resources)
       spec_helper = @spec_helper
 
-      puts erb.result(binding)
+      spec_output = erb.result(binding)
+
+      if @output_file
+        File.open(@output_file, 'w') do |spec_file|
+          spec_file.write(spec_output)
+        end
+      else
+        puts spec_output
+      end
     end
 
     def root

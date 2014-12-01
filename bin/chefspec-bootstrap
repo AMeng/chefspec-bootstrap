@@ -7,8 +7,17 @@ options = {:template => nil}
 
 optparse = OptionParser.new do |opts|
   opts.banner = "Usage: chefspec-bootstrap <recipe.rb> [options]"
-  opts.on('-t', '--template TEMPLATEFILE', "ERB template file used to generate specs") do |t|
+
+  opts.on('-t', '--template <file>', "ERB template file used to generate specs") do |t|
     options[:template] = t
+  end
+
+  opts.on('-s', '--spechelper <file>', "spec_helper.rb file. By default, looks in spec/spec_helper.rb") do |s|
+    options[:spec_helper] = s
+  end
+
+  opts.on('-o', '--output <file>', "File to output spec. Prints to stdout if not specified.") do |o|
+    options[:output_file] = o
   end
 end
 
@@ -17,5 +26,10 @@ abort "Recipe not specified!" if ARGV.empty?
 optparse.parse!
 
 recipe = ARGV[0]
-bootstrap = ChefSpec::Bootstrap.new(recipe, options[:template])
+bootstrap = ChefSpec::Bootstrap.new(
+  recipe,
+  options[:template],
+  options[:spec_helper],
+  options[:output_file]
+)
 bootstrap.generate
