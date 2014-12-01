@@ -16,7 +16,7 @@ template "/etc/apache2/sites-available/mysite" do
 end
 ```
 
-The command line tool will generate output the following to stdout:
+The command line tool will output the following to stdout:
 ```ruby
 require 'chefspec'
 
@@ -37,7 +37,6 @@ describe 'my_cookbook::my_recipe' do
 end
 ```
 
-
 Getting Started
 ---
 Install the gem
@@ -45,7 +44,7 @@ Install the gem
 gem install chefspec-bootstrap
 ```
 
-Run the command-line tool
+Run the command-line tool, pointing to a recipe:
 ```
 chefspec-bootstrap my_cookbook/recipes/my_recipe.rb
 ```
@@ -54,9 +53,15 @@ Options
 ---
 ```
 Usage: chefspec-bootstrap <recipe.rb> [options]
-    -t, --template TEMPLATEFILE      ERB template file used to generate specs
+    -t, --template <file>            ERB template file used to generate specs
+    -s, --spechelper <file>          spec_helper.rb file. By default, looks in spec/spec_helper.rb
+    -o, --output <file>              File to output spec. Prints to stdout if not specified.
 ```
 
 Creating a custom template
 ---
 A custom erb template can be passsed using the `-t` flag. See the included default template for an example.
+
+What this project is NOT:
+---
+This is not a replacement for writing ChefSpec tests. Rather, this is a way to get started when you have an entirely untested recipe.
