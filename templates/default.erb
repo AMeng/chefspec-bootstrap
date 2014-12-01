@@ -1,4 +1,5 @@
-require 'chefspec'
+require 'chefspec'<% if spec_helper %>
+require_relative '../spec_helper'<% end %>
 
 describe '<%= cookbook %>::<%= recipe %>' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }<% if not test_cases.empty? %><% test_cases.each do |test_case| %>

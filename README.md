@@ -47,7 +47,7 @@ gem install chefspec-bootstrap
 
 Run the command-line tool
 ```
-chefspec-bootstrap
+chefspec-bootstrap my_cookbook/recipes/my_recipe.rb
 ```
 
 Options

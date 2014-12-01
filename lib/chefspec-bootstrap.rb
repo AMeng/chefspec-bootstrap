@@ -6,17 +6,14 @@ require_relative 'api_map'
 
 module ChefSpec
   class Bootstrap
-    def initialize(cookbooks_dir, cookbooks_path, spec_dir, template_file, recursive)
-      @cookbooks_dir = cookbooks_dir
-      @cookbooks_path = cookbooks_path
-      @spec_dir = spec_dir
+    def initialize(recipe, template_file)
       @template_file = template_file
-      @recursive = recursive
+      @recipe = recipe
     end
 
     def setup
-      unless Dir.exist?(@cookbooks_dir)
-        abort "Unable to locate your cookbooks directory (#{@cookbooks_dir})"
+      unless File.exist?(@recipe)
+        abort "Unable to locate recipe file (#{@recipe})"
       end
 
       unless @template_file
@@ -30,12 +27,13 @@ module ChefSpec
       @api_map = ChefSpec::APIMap.new.map
 
       begin
-        require File.expand_path("#{@spec_dir}/spec_helper.rb")
+        require File.expand_path("spec/spec_helper.rb")
         @spec_helper = true
       rescue LoadError
         @spec_helper = false
         ::RSpec.configure do |config|
-          config.cookbook_path = @cookbooks_path || [@cookbooks_dir, 'cookbooks']
+          #config.cookbook_path = @cookbooks_path || [@cookbooks_dir, 'cookbooks']
+          config.cookbook_path = ['cookbooks']
         end
       end
     end
@@ -45,37 +43,18 @@ module ChefSpec
 
       erb = ERB.new(File.read(@template_file))
 
-      Dir.glob("#{@cookbooks_dir}/*/recipes/*").each do |path|
-        path, recipe_file = File.split(path)
-        recipe = recipe_file.split('.')[0]
-        cookbook = path.split(File::SEPARATOR)[1]
+      path, recipe_file = File.split(@recipe)
+      recipe = recipe_file.split('.')[0]
+      cookbook = path.split(File::SEPARATOR)[1]
+      chef_run = get_chef_run(cookbook, recipe)
 
-        filename = "#{@spec_dir}/#{cookbook}/#{recipe}_spec.rb"
+      puts '# Chefspec execution failed. Generated empty spec file.' unless chef_run
 
-        puts filename
+      resources = get_resources(chef_run, cookbook, recipe)
+      test_cases = generate_test_cases(resources)
+      spec_helper = @spec_helper
 
-        if File.exist?(filename)
-          puts '    spec already exists. Skipping.'
-        else
-          FileUtils.mkdir_p "#{@spec_dir}/#{cookbook}"
-
-          puts '    executing recipe with ChefSpec...'
-          chef_run = get_chef_run(cookbook, recipe)
-
-          if chef_run
-            puts '    execution suceeded. Creating spec file.'
-          else
-            puts '    execution failed. Creating empty spec file.'
-          end
-
-          resources = get_resources(chef_run, cookbook, recipe)
-          test_cases = generate_test_cases(resources)
-
-          File.open(filename, 'w') do |spec_file|
-            spec_file.write(erb.result(binding))
-          end
-        end
-      end
+      puts erb.result(binding)
     end
 
     def root
