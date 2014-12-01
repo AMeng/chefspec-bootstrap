@@ -3,7 +3,7 @@ chefspec-bootstrap
 
 A command line tool to get started with ChefSpec. Generates spec files for your untested recipes.
 
-Given a cookbook called `cookbook` with a recipe called `recipe.rb`:
+Given a cookbook called `my_cookbook` with a recipe called `my_recipe.rb`:
 ```ruby
 package "apache2"
 
@@ -16,11 +16,11 @@ template "/etc/apache2/sites-available/mysite" do
 end
 ```
 
-The command line tool will generate the following spec file at `spec/cookbook/recipe_spec.rb`:
+The command line tool will generate output the following to stdout:
 ```ruby
 require 'chefspec'
 
-describe 'cookbook::recipe' do
+describe 'my_cookbook::my_recipe' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
   it "installs the apache2 package" do
@@ -53,11 +53,8 @@ chefspec-bootstrap my_cookbook/recipes/my_recipe.rb
 Options
 ---
 ```
-  --cookbooks-dir, -c <s>:   Your site cookbooks directory (default: site-cookbooks)
---cookbooks-path, -o <s+>:   RSpec config for cookbook path. Defaults to RSpec.configure.cookbook_path from spec_helper.rb.
-          --recursive, -r:   Generate specs for included recipes.
-       --spec-dir, -s <s>:   Your spec directory (default: spec)
-       --template, -t <s>:   ERB template file used to generate specs
+Usage: chefspec-bootstrap <recipe.rb> [options]
+    -t, --template TEMPLATEFILE      ERB template file used to generate specs
 ```
 
 Creating a custom template
