@@ -9,10 +9,10 @@ Gem::Specification.new do |s|
   s.files       = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   s.homepage    = 'http://rubygems.org/gems/chefspec-bootstrap'
   s.license     = 'Apache'
-  s.executables   = ['chefspec-bootstrap']
+  s.executables = ['chefspec-bootstrap']
   s.required_ruby_version = '>= 1.9'
 
-  s.add_dependency 'chefspec', '~> 3.4.0'
+  s.add_dependency 'chefspec', '~> 4.0.0'
 
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.0'
