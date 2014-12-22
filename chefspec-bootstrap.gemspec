@@ -13,4 +13,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9'
 
   s.add_dependency 'chefspec', '~> 3.4.0'
+
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rspec', '~> 3.0'
 end

@@ -48,10 +48,8 @@ module ChefSpec
 
       path, recipe_file = File.split(@recipe)
       recipe = recipe_file.split('.')[0]
-      cookbook = path.split(File::SEPARATOR)[1]
+      cookbook = path.split(File::SEPARATOR)[-2]
       chef_run = get_chef_run(cookbook, recipe)
-
-      puts 'Chefspec execution failed. Generating generic spec.' unless chef_run
 
       resources = get_resources(chef_run, cookbook, recipe)
       test_cases = generate_test_cases(resources)
