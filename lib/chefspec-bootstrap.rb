@@ -58,9 +58,7 @@ module ChefSpec
       spec_output = erb.result(binding)
 
       if @output_file
-        File.open(@output_file, 'w') do |spec_file|
-          spec_file.write(spec_output)
-        end
+        generate_spec_file(spec_output)
       else
         puts spec_output
       end
@@ -68,6 +66,17 @@ module ChefSpec
 
     def root
       @root ||= Pathname.new(File.expand_path('../../', __FILE__))
+    end
+
+    def generate_spec_file(output)
+      output_path = @output_file.split(File::SEPARATOR)
+      output_path.pop
+
+      FileUtils.mkpath(output_path.join(File::SEPARATOR)) if output_path
+
+      File.open(@output_file, 'w') do |spec_file|
+        spec_file.write(spec_output)
+      end
     end
 
     def get_chef_run(cookbook, recipe)
