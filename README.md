@@ -1,6 +1,8 @@
 chefspec-bootstrap
 ==================
 
+[![Build Status](https://travis-ci.org/AMeng/chefspec-bootstrap.svg?branch=master)](https://travis-ci.org/AMeng/chefspec-bootstrap)
+
 A command line tool to get started with ChefSpec. Generates spec files for your untested recipes.
 
 Given a cookbook called `my_cookbook` with a recipe called `my_recipe.rb`:
