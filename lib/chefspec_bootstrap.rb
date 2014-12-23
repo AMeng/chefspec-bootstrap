@@ -81,11 +81,9 @@ module ChefSpec
     end
 
     def get_chef_run(cookbook, recipe)
-      begin
-        return ChefSpec::Runner.new.converge("#{cookbook}::#{recipe}")
-      rescue StandardError
-        return nil
-      end
+      return ChefSpec::Runner.new.converge("#{cookbook}::#{recipe}")
+    rescue StandardError
+      return nil
     end
 
     def get_resource_name(resource)
