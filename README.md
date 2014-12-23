@@ -13,14 +13,14 @@ A command line tool to get started with ChefSpec. Generates spec files for your 
 
 Given a cookbook called `my_cookbook` with a recipe called `my_recipe.rb`:
 ```ruby
-package "apache2"
+package 'apache2'
 
-file "/etc/apache2/sites-available/default" do
+file '/etc/apache2/sites-available/default' do
   action :delete
 end
 
-template "/etc/apache2/sites-available/mysite" do
-  source "mysite.conf.erb"
+template '/etc/apache2/sites-available/mysite' do
+  source 'mysite.conf.erb'
 end
 ```
 
@@ -31,16 +31,16 @@ require 'chefspec'
 describe 'my_cookbook::my_recipe' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }
 
-  it "installs the apache2 package" do
-    expect(chef_run).to install_package("apache2")
+  it 'installs the apache2 package' do
+    expect(chef_run).to install_package('apache2')
   end
 
-  it "deletes the /etc/apache2/conf.d/python.conf file" do
-    expect(chef_run).to delete_file("/etc/apache2/conf.d/python.conf")
+  it 'deletes the /etc/apache2/conf.d/python.conf file' do
+    expect(chef_run).to delete_file('/etc/apache2/conf.d/python.conf')
   end
 
-  it "creates the /etc/apache2/sites-available/mysite template" do
-    expect(chef_run).to create_template("/etc/apache2/sites-available/mysite")
+  it 'creates the /etc/apache2/sites-available/mysite template' do
+    expect(chef_run).to create_template('/etc/apache2/sites-available/mysite')
   end
 end
 ```
