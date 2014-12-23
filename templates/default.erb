@@ -5,7 +5,7 @@ describe '<%= cookbook %>::<%= recipe %>' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }<% if not test_cases.empty? %><% test_cases.each do |test_case| %>
 
   it '<%= test_case[:it] %>' do
-    expect(chef_run).to <%= test_case[:expect] %>('<%= test_case[:name] %>')
+    expect(chef_run).to<% if test_case[:guarded] %>_not<% end %> <%= test_case[:expect] %>('<%= test_case[:name] %>')
   end<% end %><% else %>
   it 'runs successfully' do
     expect { chef_run }.not_to raise_error
