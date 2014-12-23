@@ -114,13 +114,14 @@ module ChefSpec
         adjective = resource.name
 
         verbs.each do |verb|
-          next if verb == :nothing
-
           test_cases.push(
             it: get_it_block(noun, verb, adjective),
             expect: get_expect_block(noun, verb),
             name: adjective,
-            guarded: resource.performed_actions.empty?
+            guarded: resource.performed_actions.empty?,
+            nothing: verb == :nothing,
+            noun: noun,
+            adjective: adjective
           )
         end
       end
@@ -128,6 +129,7 @@ module ChefSpec
     end
 
     def get_it_block(noun, verb, adjective)
+      verb = 'ignore' if verb == :nothing
       it = '%{verb}s the %{adjective} %{noun}'
       noun_readable = noun.to_s.gsub('_', ' ')
       verb_readable = verb.to_s.gsub('_', ' ')
