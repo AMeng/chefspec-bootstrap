@@ -75,13 +75,13 @@ module ChefSpec
       FileUtils.mkpath(output_path.join(File::SEPARATOR)) if output_path
 
       File.open(@output_file, 'w') do |spec_file|
-        spec_file.write(spec_output)
+        spec_file.write(output)
       end
     end
 
     def get_chef_run(cookbook, recipe)
       return ChefSpec::Runner.new.converge("#{cookbook}::#{recipe}")
-    rescue Exception => e
+    rescue StandardError
       return nil
     end
 
@@ -112,21 +112,19 @@ module ChefSpec
       test_cases = []
       resources.each do |resource|
         verbs = resource.action
-        unless verbs.respond_to?(:each)
-          verbs = [verbs]
-        end
+        verbs = [verbs] unless verbs.respond_to?(:each)
 
         noun = resource.resource_name
         adjective = resource.name
 
         verbs.each do |verb|
-          unless verb == :nothing
-            test_cases.push(
-              it: get_it_block(noun, verb, adjective),
-              expect: get_expect_block(noun, verb),
-              name: adjective
-            )
-          end
+          next if verb == :nothing
+
+          test_cases.push(
+            it: get_it_block(noun, verb, adjective),
+            expect: get_expect_block(noun, verb),
+            name: adjective
+          )
         end
       end
       test_cases

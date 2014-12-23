@@ -1,4 +1,4 @@
-require_relative '../lib/chefspec-bootstrap'
+require_relative '../lib/chefspec_bootstrap'
 require_relative 'spec_helper'
 
 describe 'Bootstrap' do

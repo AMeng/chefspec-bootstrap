@@ -1,8 +1,8 @@
-Encoding:
-  Enabled: false
-
 LineLength:
   Max: 120
+
+Style/Next:
+  Enabled: false
 
 Documentation:
   Enabled: false
@@ -10,4 +10,16 @@ Documentation:
 MethodLength:
   Enabled: false
 
-inherit_from: .rubocop_todo.yml
+Metrics/AbcSize:
+  Max: 25
+
+Metrics/ClassLength:
+  Max: 150
+
+Style/FileName:
+  Exclude:
+    - bin/chefspec-bootstrap
+
+Lint/UselessAssignment:
+  Exclude:
+    - lib/chefspec_bootstrap.rb
