@@ -6,7 +6,7 @@ describe '<%= cookbook %>::<%= recipe %>' do
 
   it '<%= test_case[:it] %>' do<% if test_case[:nothing] %>
     expect(chef_run.<%= test_case[:noun] %>('<%= test_case[:adjective] %>')).to do_nothing<% else %>
-    expect(chef_run).to<% if test_case[:guarded] %>_not<% end %> <%= test_case[:expect] %>('<%= test_case[:name] %>')<% end %>
+    expect(chef_run).to<% if test_case[:guarded] %>_not<% end %> <%= test_case[:expect] %>('<%= test_case[:name] %>')<% if test_case[:compile_time] %>.at_compile_time<% end %><% end %>
   end<% end %><% else %>
   it 'runs successfully' do
     expect { chef_run }.to raise_error
