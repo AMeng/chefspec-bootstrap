@@ -1,9 +1,6 @@
 LineLength:
   Max: 120
 
-Style/Next:
-  Enabled: false
-
 Documentation:
   Enabled: false
 
