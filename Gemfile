@@ -2,9 +2,4 @@ source 'https://rubygems.org'
 
 gemspec
 
-group :test do
-  gem 'codeclimate-test-reporter'
-  gem 'rake'
-  gem 'rubocop'
-  gem 'rspec', '~> 3.0'
-end
+gem 'codeclimate-test-reporter', group: :test, require: nil
