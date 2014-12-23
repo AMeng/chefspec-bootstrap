@@ -12,12 +12,16 @@ optparse = OptionParser.new do |opts|
     options[:template] = t
   end
 
-  opts.on('-s', '--spechelper <file>', 'spec_helper.rb file. By default, looks in spec/spec_helper.rb') do |s|
+  opts.on('-s', '--spec-helper <file>', 'spec_helper.rb file. By default, looks in spec/spec_helper.rb') do |s|
     options[:spec_helper] = s
   end
 
   opts.on('-o', '--output <file>', 'File to output spec. Prints to stdout if not specified.') do |o|
     options[:output_file] = o
+  end
+
+  opts.on('-c', '--cookbook-path <dir>', 'Cookbook path (directory). Your spec_helper file can override this.') do |c|
+    options[:cookbook_path] = c
   end
 end
 
@@ -30,6 +34,7 @@ bootstrap = ChefSpec::Bootstrap.new(
   recipe,
   options[:template],
   options[:spec_helper],
-  options[:output_file]
+  options[:output_file],
+  options[:cookbook_path]
 )
 bootstrap.generate

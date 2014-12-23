@@ -6,11 +6,12 @@ require_relative 'api_map'
 
 module ChefSpec
   class Bootstrap
-    def initialize(recipe, template_file, spec_helper_file, output_file)
+    def initialize(recipe, template_file, spec_helper_file, output_file, cookbook_path)
       @template_file = template_file
       @recipe = recipe
       @spec_helper_file = spec_helper_file || 'spec/spec_helper.rb'
       @output_file = output_file
+      @cookbook_path = cookbook_path || 'cookbooks'
     end
 
     def setup
@@ -34,7 +35,7 @@ module ChefSpec
       rescue LoadError
         @spec_helper = false
         ::RSpec.configure do |config|
-          config.cookbook_path = ['cookbooks']
+          config.cookbook_path = [@cookbook_path]
         end
       end
     end
@@ -80,9 +81,11 @@ module ChefSpec
     end
 
     def get_chef_run(cookbook, recipe)
-      return ChefSpec::Runner.new.converge("#{cookbook}::#{recipe}")
-    rescue StandardError
-      return nil
+      begin
+        return ChefSpec::Runner.new.converge("#{cookbook}::#{recipe}")
+      rescue StandardError
+        return nil
+      end
     end
 
     def get_resource_name(resource)
