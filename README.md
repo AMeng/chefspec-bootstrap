@@ -9,7 +9,7 @@ chefspec-bootstrap
 [travis]: http://travis-ci.org/AMeng/chefspec-bootstrap
 [codeclimate]: https://codeclimate.com/github/AMeng/chefspec-bootstrap
 
-A command line tool to get started with ChefSpec. Generates spec files for your untested recipes.
+A command line tool to get started with [ChefSpec](https://github.com/sethvargo/chefspec). Generates spec files for your untested recipes.
 
 Given a cookbook called `my_cookbook` with a recipe called `my_recipe.rb`:
 ```ruby
@@ -62,8 +62,9 @@ Options
 ```
 Usage: chefspec-bootstrap <recipe.rb> [options]
     -t, --template <file>            ERB template file used to generate specs
-    -s, --spechelper <file>          spec_helper.rb file. By default, looks in spec/spec_helper.rb
+    -s, --spec-helper <file>         spec_helper.rb file. By default, looks in spec/spec_helper.rb
     -o, --output <file>              File to output spec. Prints to stdout if not specified.
+    -c, --cookbook-path <dir>        Cookbook path (directory). Your spec_helper file can override this.
 ```
 
 Creating a custom template
