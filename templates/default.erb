@@ -4,10 +4,11 @@ require_relative '../spec_helper'<% end %>
 describe '<%= cookbook %>::<%= recipe %>' do
   let(:chef_run) { ChefSpec::Runner.new.converge(described_recipe) }<% if not test_cases.empty? %><% test_cases.each do |test_case| %>
 
-  it '<%= test_case[:it] %>' do
-    expect(chef_run).to<% if test_case[:guarded] %>_not<% end %> <%= test_case[:expect] %>('<%= test_case[:name] %>')
+  it '<%= test_case[:it] %>' do<% if test_case[:nothing] %>
+    expect(chef_run.<%= test_case[:noun] %>('<%= test_case[:adjective] %>')).to do_nothing<% else %>
+    expect(chef_run).to<% if test_case[:guarded] %>_not<% end %> <%= test_case[:expect] %>('<%= test_case[:name] %>')<% end %>
   end<% end %><% else %>
   it 'runs successfully' do
-    expect { chef_run }.not_to raise_error
+    expect { chef_run }.to raise_error
   end<% end %>
 end
