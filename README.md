@@ -1,9 +1,13 @@
 chefspec-bootstrap
 ==================
 
-[![Build Status](https://travis-ci.org/AMeng/chefspec-bootstrap.svg?branch=master)](https://travis-ci.org/AMeng/chefspec-bootstrap)
-[![Gem Version](https://badge.fury.io/rb/chefspec-bootstrap.svg)](https://rubygems.org/gems/chefspec-bootstrap)
-[![Code Climate](https://codeclimate.com/github/AMeng/chefspec-bootstrap/badges/gpa.svg)](https://codeclimate.com/github/AMeng/chefspec-bootstrap)
+[![Gem Version](http://img.shields.io/gem/v/chefspec-bootstrap.svg)][gem]
+[![Build Status](http://img.shields.io/travis/AMeng/chefspec-bootstrap.svg)][travis]
+[![Code Climate](http://img.shields.io/codeclimate/github/AMeng/chefspec-bootstrap.svg)][codeclimate]
+
+[gem]: https://rubygems.org/gems/chefspec-bootstrap
+[travis]: http://travis-ci.org/AMeng/chefspec-bootstrap
+[codeclimate]: https://codeclimate.com/github/AMeng/chefspec-bootstrap
 
 A command line tool to get started with ChefSpec. Generates spec files for your untested recipes.
 
