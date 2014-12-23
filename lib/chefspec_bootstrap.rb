@@ -107,21 +107,29 @@ module ChefSpec
     def generate_test_cases(resources)
       test_cases = []
       resources.each do |resource|
-        verbs = resource.action
-        verbs = [verbs] unless verbs.respond_to?(:each)
+        verbs = resource.instance_variable_get(:@performed_actions)
+        if verbs.empty?
+          if resource.action != [:nothing]
+            verbs = { resource.action.to_s => {} }
+          else
+            verbs = { nothing: {} }
+          end
+        end
 
         noun = resource.resource_name
         adjective = resource.name
+        guarded = resource.performed_actions.empty?
 
-        verbs.each do |verb|
+        verbs.each do |verb, time|
           test_cases.push(
             it: get_it_block(noun, verb, adjective),
             expect: get_expect_block(noun, verb),
             name: adjective,
-            guarded: resource.performed_actions.empty?,
+            guarded: guarded,
             nothing: verb == :nothing,
             noun: noun,
-            adjective: adjective
+            adjective: adjective,
+            compile_time: time[:compile_time]
           )
         end
       end
