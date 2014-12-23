@@ -96,13 +96,8 @@ module ChefSpec
 
     def get_resources(chef_run, cookbook, recipe)
       if chef_run
-        resources = get_all_resources(chef_run)
-        if @recursive
-          return resources
-        else
-          return resources.select do |resource|
-            resource.cookbook_name == cookbook.to_sym && resource.recipe_name == recipe
-          end
+        return get_all_resources(chef_run).select do |resource|
+          resource.cookbook_name == cookbook.to_sym && resource.recipe_name == recipe
         end
       else
         return []
@@ -124,7 +119,8 @@ module ChefSpec
           test_cases.push(
             it: get_it_block(noun, verb, adjective),
             expect: get_expect_block(noun, verb),
-            name: adjective
+            name: adjective,
+            guarded: resource.performed_actions.empty?
           )
         end
       end
