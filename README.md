@@ -3,6 +3,7 @@ chefspec-bootstrap
 
 [![Build Status](https://travis-ci.org/AMeng/chefspec-bootstrap.svg?branch=master)](https://travis-ci.org/AMeng/chefspec-bootstrap)
 [![Gem Version](https://badge.fury.io/rb/chefspec-bootstrap.svg)](https://rubygems.org/gems/chefspec-bootstrap)
+[![Code Climate](https://codeclimate.com/github/AMeng/chefspec-bootstrap/badges/gpa.svg)](https://codeclimate.com/github/AMeng/chefspec-bootstrap)
 
 A command line tool to get started with ChefSpec. Generates spec files for your untested recipes.
 
